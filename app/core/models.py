@@ -45,26 +45,28 @@ class Swimmer(models.Model):
         ('Female', 'Female'),
         ('Other', 'Other')
     )
-    user = models.OneToOneField(User, related_name='swimmer', on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='swimmer',
+                                on_delete=models.CASCADE)
     date_of_birth = models.DateField()
-    gender = models.CharField(max_length=25, choices=GENDER_CHOICES, default='Male')
-    city_of_birth = models.CharField(max_length=255)
-    school = models.CharField(max_length=255)
-    phone_no = models.CharField(max_length=20)
-    country = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    fathers_name = models.CharField(max_length=255)
-    mothers_name = models.CharField(max_length=255)
-    height_in_cm = models.IntegerField()
-    weight_in_pound = models.IntegerField()
-    rest_heart_rate = models.CharField(max_length=10)
-    max_heart_rate = models.CharField(max_length=10)
-    distance = models.CharField(max_length=10)
-    stroke_rate = models.IntegerField()
-    main_stroke = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='')
-
+    gender = models.CharField(max_length=25,
+                              choices=GENDER_CHOICES,
+                              default='Male')
+    city_of_birth = models.CharField(max_length=255, null=True)
+    school = models.CharField(max_length=255, null=True)
+    phone_no = models.CharField(max_length=20, null=True)
+    country = models.CharField(max_length=255, null=True)
+    state = models.CharField(max_length=255, null=True)
+    city = models.CharField(max_length=255, null=True)
+    fathers_name = models.CharField(max_length=255, null=True)
+    mothers_name = models.CharField(max_length=255, null=True)
+    height_in_cm = models.IntegerField(default=0)
+    weight_in_pound = models.IntegerField(default=0)
+    rest_heart_rate = models.CharField(max_length=10, null=True)
+    max_heart_rate = models.CharField(max_length=10, null=True)
+    distance = models.CharField(max_length=10, null=True)
+    stroke_rate = models.IntegerField(null=True)
+    main_stroke = models.CharField(max_length=50, null=True)
+    image = models.ImageField(upload_to='', null=True)
 
 
 class Game(models.Model):
@@ -101,7 +103,8 @@ class Competition(models.Model):
         ('IndMedley400', 'IndMedley400')
     )
 
-    game = models.ForeignKey(Game, related_name='competitions', on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, related_name='competitions',
+                             on_delete=models.CASCADE)
     type = models.CharField(max_length=255, choices=TYPE_CHOICE)
     swimmers = models.ManyToManyField(Swimmer, related_name='competitions')
 
