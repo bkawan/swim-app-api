@@ -7,7 +7,6 @@ from django.utils.safestring import mark_safe
 
 
 class UserManager(BaseUserManager):
-
     def create_user(self, email, password=None, **extra_fields):
         """creates and saves a new user"""
         if not email:
@@ -75,10 +74,12 @@ class Swimmer(models.Model):
     def age(self):
         import datetime
         return int((datetime.date.today() - self.date_of_birth).days / 365.25)
+
     age = property(age)
 
     def thumbnail(self):
-        return mark_safe(u'<img height="30px" width="30px" src="%s" />' % self.image.url)
+        return mark_safe(u'<img height="30px" width="30px" src="%s" />'
+                         % self.image.url)
 
     thumbnail.short_description = 'Photo'
     thumbnail.allow_tags = True
@@ -100,32 +101,49 @@ class Game(models.Model):
 
 
 class Competition(models.Model):
-    freestyle_50 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    freestyle_100 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    freestyle_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    freestyle_400 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    freestyle_800 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    freestyle_1500 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    freestyle_50 = models.DecimalField(max_digits=5,
+                                       decimal_places=2, null=True)
+    freestyle_100 = models.DecimalField(max_digits=5,
+                                        decimal_places=2, null=True)
+    freestyle_200 = models.DecimalField(max_digits=5,
+                                        decimal_places=2, null=True)
+    freestyle_400 = models.DecimalField(max_digits=5,
+                                        decimal_places=2, null=True)
+    freestyle_800 = models.DecimalField(max_digits=5,
+                                        decimal_places=2, null=True)
+    freestyle_1500 = models.DecimalField(max_digits=5,
+                                         decimal_places=2, null=True)
 
-    backstroke_50 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    backstroke_100 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    backstroke_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    backstroke_50 = models.DecimalField(max_digits=5,
+                                        decimal_places=2, null=True)
+    backstroke_100 = models.DecimalField(max_digits=5,
+                                         decimal_places=2, null=True)
+    backstroke_200 = models.DecimalField(max_digits=5,
+                                         decimal_places=2, null=True)
 
-    breaststroke_50 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    breaststroke_100 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    breaststroke_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    breaststroke_50 = models.DecimalField(max_digits=5,
+                                          decimal_places=2, null=True)
+    breaststroke_100 = models.DecimalField(max_digits=5,
+                                           decimal_places=2, null=True)
+    breaststroke_200 = models.DecimalField(max_digits=5,
+                                           decimal_places=2, null=True)
 
-    butterfly_50 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    butterfly_100 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    butterfly_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    butterfly_50 = models.DecimalField(max_digits=5,
+                                       decimal_places=2, null=True)
+    butterfly_100 = models.DecimalField(max_digits=5,
+                                        decimal_places=2, null=True)
+    butterfly_200 = models.DecimalField(max_digits=5,
+                                        decimal_places=2, null=True)
 
-    ind_Medley_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    ind_Medley_400 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    ind_Medley_200 = models.DecimalField(max_digits=5,
+                                         decimal_places=2, null=True)
+    ind_Medley_400 = models.DecimalField(max_digits=5,
+                                         decimal_places=2, null=True)
 
     game = models.ForeignKey(Game, related_name='competitions',
                              on_delete=models.CASCADE)
     swimmer = models.ForeignKey(Swimmer, related_name='competitions',
-                             on_delete=models.CASCADE)
+                                on_delete=models.CASCADE)
 
     def __str__(self):
         return self.game.name

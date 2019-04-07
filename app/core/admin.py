@@ -55,6 +55,7 @@ class SwimmerAdmin(admin.ModelAdmin):
     search_fields = ['city', 'school', 'fathers_name']
     list_display_links = ['user']
 
+
 @admin.register(models.Game)
 class GamesAdmin(admin.ModelAdmin):
     list_display = (
