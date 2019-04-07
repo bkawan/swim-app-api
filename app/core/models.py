@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
 
 from django.conf import settings
+from django.utils.safestring import mark_safe
 
 
 class UserManager(BaseUserManager):
@@ -38,6 +39,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+    def __str__(self):
+        return self.name
+
 
 class Swimmer(models.Model):
     GENDER_CHOICES = (
@@ -68,6 +72,20 @@ class Swimmer(models.Model):
     main_stroke = models.CharField(max_length=50, null=True)
     image = models.ImageField(upload_to='', null=True)
 
+    def age(self):
+        import datetime
+        return int((datetime.date.today() - self.date_of_birth).days / 365.25)
+    age = property(age)
+
+    def thumbnail(self):
+        return mark_safe(u'<img height="30px" width="30px" src="%s" />' % self.image.url)
+
+    thumbnail.short_description = 'Photo'
+    thumbnail.allow_tags = True
+
+    def __str__(self):
+        return self.user.name
+
 
 class Game(models.Model):
     """
@@ -77,36 +95,40 @@ class Game(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
 
+    def __str__(self):
+        return self.name
+
 
 class Competition(models.Model):
-    TYPE_CHOICE = (
-        ('Freestyle_50', 'Freestyle_50'),
-        ('Freestyle_100', 'Freestyle_100'),
-        ('Freestyle_200', 'Freestyle_200'),
-        ('Freestyle_400', 'Freestyle_400'),
-        ('Freestyle_800', 'Freestyle_800'),
-        ('Freestyle_1500', 'Freestyle_1500'),
+    freestyle_50 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    freestyle_100 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    freestyle_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    freestyle_400 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    freestyle_800 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    freestyle_1500 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
-        ('Backstroke_50', 'Backstroke_50'),
-        ('Backstroke_100', 'Backstroke_100'),
-        ('Backstroke_200', 'Backstroke_200'),
+    backstroke_50 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    backstroke_100 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    backstroke_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
-        ('Breaststroke_50', 'Breaststroke_50'),
-        ('Breaststroke_100', 'Breaststroke_100'),
-        ('Breaststroke_200', 'Breaststroke_200'),
+    breaststroke_50 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    breaststroke_100 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    breaststroke_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
-        ('Butterfly_50', 'Butterfly_50'),
-        ('Butterfly_100', 'Butterfly_100'),
-        ('Butterfly_200', 'Butterfly_200'),
+    butterfly_50 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    butterfly_100 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    butterfly_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
-        ('IndMedley200', 'IndMedley200'),
-        ('IndMedley400', 'IndMedley400')
-    )
+    ind_Medley_200 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    ind_Medley_400 = models.DecimalField(max_digits=5, decimal_places=2, null=True)
 
     game = models.ForeignKey(Game, related_name='competitions',
                              on_delete=models.CASCADE)
-    type = models.CharField(max_length=255, choices=TYPE_CHOICE)
-    swimmers = models.ManyToManyField(Swimmer, related_name='competitions')
+    swimmer = models.ForeignKey(Swimmer, related_name='competitions',
+                             on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.game.name
 
 
 class Tag(models.Model):

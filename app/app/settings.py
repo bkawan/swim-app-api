@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '@x7=@9l37$r@qf_pdd=cao%8r45!*)br=f1sa01kt0l@ix*%_b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['hamro.app', '104.248.89.140', '127.0.0.1']
+ALLOWED_HOSTS = []
 
 
 # Application definition
