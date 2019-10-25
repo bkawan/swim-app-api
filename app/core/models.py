@@ -71,6 +71,10 @@ class Swimmer(models.Model):
     stroke_rate = models.IntegerField(null=True)
     main_stroke = models.CharField(max_length=50, null=True)
     image = models.ImageField(upload_to='', null=True)
+    current_club = models.CharField(max_length=100, null=True,blank=True)
+    current_coach = models.CharField(max_length=100, null=True,blank=True)
+
+
 
     def age(self):
         import datetime
